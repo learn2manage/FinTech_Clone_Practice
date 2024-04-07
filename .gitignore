@@ -45,6 +45,6 @@ ios/
 
 *.ttf
 *.mp4
-
+*.mov
 babel.config.js
 
