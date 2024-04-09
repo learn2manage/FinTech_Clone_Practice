@@ -8,13 +8,30 @@ import {
 import React, { useState } from 'react';
 import { defaultStyles } from '@/constants/Styles';
 import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { useSignUp } from '@clerk/clerk-expo';
 
 const Page = () => {
     const [countryCode, setCountryCode] = useState('+852');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const completePhoneNumber = `${countryCode}${phoneNumber}`;
-    const onSignup = async () => {};
+    //const { signUp, setActive } = useSignUp();
+
+    const onSignup = async () => {
+        const completePhoneNumber = `${countryCode}${phoneNumber}`;
+
+        try {
+            /* await signUp!.create({
+                phoneNumber: completePhoneNumber,
+            }); */
+            //signUp!.preparePhoneNumberVerification();
+            router.push({
+                pathname: '/',
+                params: { phone: completePhoneNumber },
+            });
+        } catch (error) {
+            console.log('🚀 ~ file: signup.tsx:32 ~ onSignup ~ error:', error);
+        }
+    };
 
     return (
         <View style={defaultStyles.container}>
