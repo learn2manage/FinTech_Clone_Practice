@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ClerkProvider } from '@clerk/clerk-expo';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -51,6 +51,7 @@ const InitialLayout = () => {
     });
 
     const router = useRouter();
+    const { isLoaded, isSignedIn } = useAuth();
 
     // Expo Router uses Error Boundaries to catch errors in the navigation tree.
     useEffect(() => {
@@ -62,6 +63,10 @@ const InitialLayout = () => {
             SplashScreen.hideAsync();
         }
     }, [loaded]);
+
+    useEffect(() => {
+        console.log('isSignedIn', isSignedIn);
+    }, [isSignedIn]);
 
     if (!loaded) {
         return null;

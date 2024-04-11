@@ -6,8 +6,14 @@ import {
     useSignUp,
 } from '@clerk/clerk-expo';
 import { Link, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+    CodeField,
+    Cursor,
+    useBlurOnFulfill,
+    useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 const CELL_COUNT = 6;
 
 const Page = () => {
@@ -18,6 +24,12 @@ const Page = () => {
     const [code, setCode] = useState('');
     const { signIn } = useSignIn();
     const { signUp, setActive } = useSignUp();
+
+    const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
+    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+        value: code,
+        setValue: setCode,
+    });
 
     useEffect(() => {
         if (code.length === 6) {
@@ -36,7 +48,7 @@ const Page = () => {
             });
             await setActive!({ session: signUp!.createdSessionId });
         } catch (err) {
-            console.log('error', JSON.stringify(err, null, 2));
+            console.log('Signup error', JSON.stringify(err, null, 2));
             if (isClerkAPIResponseError(err)) {
                 Alert.alert('Error', err.errors[0].message);
             }
@@ -64,6 +76,40 @@ const Page = () => {
             <Text style={defaultStyles.descriptionText}>
                 Code sent to {phone} unless you already have an account
             </Text>
+
+            <CodeField
+                ref={ref}
+                {...props}
+                value={code}
+                onChangeText={setCode}
+                cellCount={CELL_COUNT}
+                rootStyle={styles.codeFieldRoot}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                renderCell={({ index, symbol, isFocused }) => (
+                    <Fragment key={index}>
+                        <View
+                            // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
+                            onLayout={getCellOnLayoutHandler(index)}
+                            key={index}
+                            style={[
+                                styles.cellRoot,
+                                isFocused && styles.focusCell,
+                            ]}>
+                            <Text style={styles.cellText}>
+                                {symbol || (isFocused ? <Cursor /> : null)}
+                            </Text>
+                        </View>
+                        {index === 2 ? (
+                            <View
+                                key={`separator-${index}`}
+                                style={styles.separator}
+                            />
+                        ) : null}
+                    </Fragment>
+                )}
+            />
+
             <Link href={'/login'} replace asChild>
                 <TouchableOpacity>
                     <Text style={[defaultStyles.textLink]}>

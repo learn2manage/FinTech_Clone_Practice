@@ -15,27 +15,29 @@ const Page = () => {
     const [countryCode, setCountryCode] = useState('+852');
     const [phoneNumber, setPhoneNumber] = useState('');
     const router = useRouter();
-    //const { signUp, setActive } = useSignUp();
+    const { signUp, setActive } = useSignUp();
 
     const onSignup = async () => {
         const completePhoneNumber = `${countryCode}${phoneNumber}`;
-        router.push({
-            pathname: '/verify/[phone]',
-            params: { phone: completePhoneNumber },
-        });
 
         try {
-            /* await signUp!.create({
+            await signUp!.create({
                 phoneNumber: completePhoneNumber,
-            }); */
-            //signUp!.preparePhoneNumberVerification();
-            //router.push({
-            //    pathname: '/',
-            //    params: { phone: completePhoneNumber },
-            //});
+            });
+            signUp!.preparePhoneNumberVerification();
+
+            router.push({
+                pathname: '/verify/[phone]',
+                params: { phone: completePhoneNumber },
+            });
         } catch (error) {
-            console.log('🚀 ~ file: signup.tsx:32 ~ onSignup ~ error:', error);
+            console.error('Error signing up:', error);
         }
+
+        /* router.push({
+            pathname: '/verify/[phone]',
+            params: { phone: completePhoneNumber },
+        }); */
     };
 
     return (
