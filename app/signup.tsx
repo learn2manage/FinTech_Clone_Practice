@@ -46,7 +46,7 @@ const Page = () => {
             </Text>
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { flex: 0.5 }]}
                     placeholder="Country Code"
                     placeholderTextColor={Colors.gray}
                     keyboardType="numeric"
