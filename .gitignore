@@ -47,4 +47,4 @@ ios/
 *.mp4
 *.mov
 babel.config.js
-
+.eslintrc
