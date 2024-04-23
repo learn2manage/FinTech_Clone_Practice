@@ -69,10 +69,11 @@ const Page = () => {
             <View style={{ flex: 1 }}>
               <Text style={{ fontWeight: '400' }}>{transaction.title}</Text>
               <Text style={{ color: Colors.gray, fontSize: 12 }}>
-                {/* when coding and debug in different machines, the existing 
+                {/* when coding and debug in different machines/devices, the existing 
                  store may have date format incompatible that cause type error,
                  a simple fix is change to toString(), clear trans and apply toLocaleDateString again */}
-                {transaction.date.toLocaleDateString()}
+                {transaction.date.toString()}
+                {/* {transaction.date.toLocaleDateString()} */}
               </Text>
             </View>
             <Text>${transaction.amount}</Text>
