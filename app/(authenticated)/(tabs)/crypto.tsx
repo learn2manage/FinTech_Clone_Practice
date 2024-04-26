@@ -9,49 +9,97 @@ import { Currency } from '@/interfaces/crpyto';
 import { center } from '@shopify/react-native-skia';
 
 const Page = () => {
-  const headerHeight = useHeaderHeight();
+    const headerHeight = useHeaderHeight();
 
-  const currencies = useQuery({
-    queryKey: ['listings'],
-    queryFn: () => fetch('/api/listings').then((res) => res.json()),
-  });
+    const currencies = useQuery({
+        queryKey: ['listings'],
+        queryFn: () => fetch('/api/listings').then((res) => res.json()),
+    });
 
-  const ids = currencies.data
-    ?.map((currency: Currency) => currency.id)
-    .join(',');
-  // console.log('🚀 ~ file: crypto.tsx:17 ~ Page ~ ids:', ids);
-  const { data } = useQuery({
-    queryKey: ['info', ids],
-    queryFn: () => fetch(`/api/info?ids=${ids}`).then((res) => res.json()),
-    enabled: !!ids,
-  });
+    const ids = currencies.data
+        ?.map((currency: Currency) => currency.id)
+        .join(',');
+    // console.log('🚀 ~ file: crypto.tsx:17 ~ Page ~ ids:', ids);
+    const { data } = useQuery({
+        queryKey: ['info', ids],
+        queryFn: () => fetch(`/api/info?ids=${ids}`).then((res) => res.json()),
+        enabled: !!ids,
+    });
 
-  return (
-    <ScrollView
-      style={{ backgroundColor: Colors.background }}
-      contentContainerStyle={{ paddingTop: headerHeight }}>
-      <Text style={defaultStyles.sectionHeader}>Latest Crypot</Text>
-      <View style={defaultStyles.block}>
-        {currencies.data?.map((currency: Currency) => (
-          <Link href={`/crypto/${currency.id}`} key={currency.id} asChild>
-            <TouchableOpacity
-              style={{ flexDirection: 'row', gap: 14, alignItems: 'center' }}>
-              <Image
-                source={{ uri: data?.[currency.id].logo }}
-                style={{ width: 40, height: 40 }}
-              />
-              <View style={{ flex: 1, gap: 6 }}>
-                <Text style={{ fontWeight: '600', color: Colors.dark }}>
-                  {currency.name}
-                </Text>
-                <Text style={{ color: Colors.gray }}>{currency.symbol}</Text>
-              </View>
-            </TouchableOpacity>
-          </Link>
-        ))}
-      </View>
-    </ScrollView>
-  );
+    return (
+        <ScrollView
+            style={{ backgroundColor: Colors.background }}
+            contentContainerStyle={{ paddingTop: headerHeight }}>
+            <Text style={defaultStyles.sectionHeader}>Latest Crypot</Text>
+            <View style={defaultStyles.block}>
+                {currencies.data?.map((currency: Currency) => (
+                    <Link
+                        href={`/crypto/${currency.id}`}
+                        key={currency.id}
+                        asChild>
+                        <TouchableOpacity
+                            style={{
+                                flexDirection: 'row',
+                                gap: 14,
+                                alignItems: 'center',
+                            }}>
+                            <Image
+                                source={{ uri: data?.[currency.id].logo }}
+                                style={{ width: 40, height: 40 }}
+                            />
+                            <View style={{ flex: 1, gap: 6 }}>
+                                <Text
+                                    style={{
+                                        fontWeight: '600',
+                                        color: Colors.dark,
+                                    }}>
+                                    {currency.name}
+                                </Text>
+                                <Text style={{ color: Colors.gray }}>
+                                    {currency.symbol}
+                                </Text>
+                            </View>
+                            <View style={{ gap: 6, alignItems: 'flex-end' }}>
+                                <Text>
+                                    ${currency.quote.EUR.price.toFixed(2)}
+                                </Text>
+                                <View style={{ flexDirection: 'row', gap: 4 }}>
+                                    <Ionicons
+                                        name={
+                                            currency.quote.EUR
+                                                .percent_change_1h >= 0
+                                                ? 'arrow-up'
+                                                : 'arrow-down'
+                                        }
+                                        size={16}
+                                        color={
+                                            currency.quote.EUR
+                                                .percent_change_1h >= 0
+                                                ? 'green'
+                                                : 'red'
+                                        }
+                                    />
+                                    <Text
+                                        style={{
+                                            color:
+                                                currency.quote.EUR
+                                                    .percent_change_1h >= 0
+                                                    ? 'green'
+                                                    : 'red',
+                                        }}>
+                                        {currency.quote.EUR.percent_change_1h.toFixed(
+                                            3
+                                        )}
+                                        %
+                                    </Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </Link>
+                ))}
+            </View>
+        </ScrollView>
+    );
 };
 
 export default Page;

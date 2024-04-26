@@ -15,7 +15,8 @@ export async function GET(request: ExpoRequest) {
   );
 
   const res = await response.json();
-  return ExpoResponse.json(res.data); */
+  return ExpoResponse.json(res.data);   */
+  
   return ExpoResponse.json(data);
 }
 

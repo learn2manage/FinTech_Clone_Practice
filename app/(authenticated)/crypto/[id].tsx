@@ -34,6 +34,7 @@ function ToolTip({ x, y }: { x: SharedValue<number>; y: SharedValue<number> }) {
 
 const Page = () => {
     const { id } = useLocalSearchParams();
+    // console.log('🚀 ~ file: [id].tsx:37 ~ Page ~ id:', id);
     const headerHeight = useHeaderHeight();
     const [activeIndex, setActiveIndex] = useState(0);
     const font = useFont(require('@/assets/fonts/SpaceMono-Regular.ttf'), 12);
@@ -53,13 +54,13 @@ const Page = () => {
             return info[+id];
         },
     });
+    // console.log('🚀 ~ file: [id].tsx:51 ~ Page ~ data:', data);
 
     const { data: tickers } = useQuery({
         queryKey: ['tickers'],
         queryFn: async (): Promise<any[]> =>
             fetch(`/api/tickers`).then((res) => res.json()),
     });
-
     const animatedText = useAnimatedProps(() => {
         return {
             text: `${state.y.price.value.value.toFixed(2)} €`,
@@ -79,9 +80,9 @@ const Page = () => {
         <>
             <Stack.Screen options={{ title: data?.name }} />
             <SectionList
-                style={{ marginTop: headerHeight }}
+                style={{ paddingTop: headerHeight }}
                 contentInsetAdjustmentBehavior="automatic"
-                // scrollEnabled={true}
+                scrollEnabled={true}
                 keyExtractor={(i) => i.title}
                 sections={[{ data: [{ title: 'Chart' }] }]}
                 renderSectionHeader={() => (
@@ -134,7 +135,6 @@ const Page = () => {
                                 style={{ width: 60, height: 60 }}
                             />
                         </View>
-
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -186,6 +186,7 @@ const Page = () => {
                 )}
                 renderItem={({ item }) => (
                     <>
+                        {/* Chart */}
                         <View style={[defaultStyles.block, { height: 500 }]}>
                             {tickers && (
                                 <>
@@ -276,7 +277,11 @@ const Page = () => {
                                 </>
                             )}
                         </View>
-                        <View style={[defaultStyles.block, { marginTop: 20 }]}>
+                        <View
+                            style={[
+                                defaultStyles.block,
+                                { marginTop: 20, marginBottom: 140 },
+                            ]}>
                             <Text style={styles.subtitle}>Overview</Text>
                             <Text style={{ color: Colors.gray }}>
                                 Bitcoin is a decentralized digital currency,
