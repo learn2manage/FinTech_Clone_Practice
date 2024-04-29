@@ -16,7 +16,7 @@ import { getAppIcon, setAppIcon } from 'expo-dynamic-app-icon';
 
 const ICONS = [
     {
-        name: 'Default',
+        name: 'Normal',
         icon: require('@/assets/images/icon.png'),
     },
     {

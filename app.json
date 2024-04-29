@@ -35,7 +35,7 @@
             [
                 "expo-dynamic-app-icon",
                 {
-                    "default": {
+                    "normal": {
                         "image": "./assets/images/icon.png",
                         "prerendered": true
                     },
