@@ -32,21 +32,23 @@
         "plugins": [
             ["expo-router", { "origin": "http://172.16.100.126:8081" }],
             "expo-secure-store",
-            "expo-dynamic-app-icon",
-            {
-                "default": {
-                    "image": "./assets/images/icon.png",
-                    "prerendered": true
-                },
-                "dark": {
-                    "image": "./assets/images/icon-dark.png",
-                    "prerendered": true
-                },
-                "vivid": {
-                    "image": "./assets/images/icon-vivid.png",
-                    "prerendered": true
+            [
+                "expo-dynamic-app-icon",
+                {
+                    "default": {
+                        "image": "./assets/images/icon.png",
+                        "prerendered": true
+                    },
+                    "dark": {
+                        "image": "./assets/images/icon-dark.png",
+                        "prerendered": true
+                    },
+                    "vivid": {
+                        "image": "./assets/images/icon-vivid.png",
+                        "prerendered": true
+                    }
                 }
-            }
+            ]
         ],
         "experiments": {
             "typedRoutes": true
